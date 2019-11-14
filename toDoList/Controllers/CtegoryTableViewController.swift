@@ -7,17 +7,22 @@
 //
 
 import UIKit
-import CoreData
+import RealmSwift
+
 class CtegoryTableViewController: UITableViewController {
     
-    var categoryArr = [Category]()
+    let realm = try! Realm()
     
-    let context = (UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
+    var categories: Results <Category>?
+    
+    //  var categoryArr = [Category]()
+    
+    //    let context = (UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadData()
+          loadData()
     }
     
     // MARK: - Table view data source Methods
@@ -25,7 +30,7 @@ class CtegoryTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categoryArr.count
+        return categories?.count ?? 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -34,7 +39,7 @@ class CtegoryTableViewController: UITableViewController {
         
         //      let categoryitems = categoryArr[indexPath.row]
         
-        cell.textLabel?.text = categoryArr[indexPath.row].name
+        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Add yet"
         
         return cell
         
@@ -47,7 +52,7 @@ class CtegoryTableViewController: UITableViewController {
         
         performSegue(withIdentifier: "goToItems", sender: self)
         
-        saveCategories()
+        //  saveCategories()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -56,7 +61,7 @@ class CtegoryTableViewController: UITableViewController {
         
         if let   indexpath = tableView.indexPathForSelectedRow {
             
-            destinationVC.selctedCategory = categoryArr [indexpath.row]
+            destinationVC.selctedCategory = categories? [indexpath.row]
         }
         
     }
@@ -68,11 +73,17 @@ class CtegoryTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
-            let newCategory =  Category(context: self.context)
+            // Mark -> Core data code
+            //            let newCategory =  Category(context: self.context)
+            
+            // Mark -> Realm Code
+            
+            let newCategory =  Category()
+            
             newCategory.name = textField.text!
             
-            self.categoryArr.append(newCategory)
-            self.saveCategories()
+    //        self.categories.append(newCategory)
+            self.saveCategories(category: newCategory)
         }
         
         alert.addAction(action)
@@ -89,12 +100,14 @@ class CtegoryTableViewController: UITableViewController {
     
     //Mark -> Functions and data manipulation
     
-    func saveCategories (){
+    func saveCategories (category: Category){
         
         do{
             
-            try context.save()
-            
+            //       try context.save()
+            try realm.write {
+                realm.add(category)
+            }
         }
         catch{
             print(" Error Saving context \(error)")
@@ -105,16 +118,21 @@ class CtegoryTableViewController: UITableViewController {
     }
     func loadData (){
         
-        let request:NSFetchRequest <Category> = Category.fetchRequest()
         
-        do{
-           categoryArr = try context.fetch(request)
-        }
-            
-        catch{
-            
-            print(" Error Saving context \(error)")
-        }
+        categories = realm.objects(Category.self)
+        
+        
+        //        // Mark -> Core data code
+        //        //      let request:NSFetchRequest <Category> = Category.fetchRequest()
+        //
+        //        do{
+        //            categoryArr = try context.fetch(request)
+        //        }
+        //
+        //        catch{
+        //
+        //            print(" Error Saving context \(error)")
+        //        }
         tableView.reloadData()
     }
     

@@ -87,8 +87,8 @@
 			isa = PBXGroup;
 			children = (
 				3B5379F7236BCCF800D86DE3 /* AppDelegate.swift */,
-				3B5379F9236BCCF800D86DE3 /* toDo.swift */,
 				E20EDF0823753EBC00447EDD /* CtegoryTableViewController.swift */,
+				3B5379F9236BCCF800D86DE3 /* toDo.swift */,
 				E20A51E9236FB1550013BECD /* Data Models */,
 			);
 			path = Controllers;
@@ -114,8 +114,8 @@
 		E20A51E9236FB1550013BECD /* Data Models */ = {
 			isa = PBXGroup;
 			children = (
-				E2C4FDF82378277200B4533F /* Items.swift */,
 				E2C4FDFA2378278300B4533F /* Category.swift */,
+				E2C4FDF82378277200B4533F /* Items.swift */,
 			);
 			path = "Data Models";
 			sourceTree = "<group>";
