@@ -16,7 +16,7 @@ class toDo: UITableViewController {
     var toDoItems : Results <Items>?
     let realm = try! Realm()
     
-
+    
     var   selctedCategory : Category? {
         
         didSet{
@@ -26,34 +26,8 @@ class toDo: UITableViewController {
         
     }
     
-    //  let context = (UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        
-        //
-        //        let newItem1 = Items()
-        //        newItem1.title = "Sport"
-        //        dolist.append(newItem1)
-        //
-        //        let newItem2 = Items()
-        //        newItem2.title = "Shopping"
-        //        dolist.append(newItem2)
-        //
-        //        let newItem3 = Items()
-        //        newItem3.title = "Running"
-        //        dolist.append(newItem3)
-        
-        //   print(dataFilepath)
-        
-        
-        
-        
-        
-        //        if let items = defaults.array(forKey: "dolist") as? [Items]{
-        //           dolist = items
-        //        }
         
     }
     
@@ -64,8 +38,6 @@ class toDo: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        //  let cell = UITableViewCell(style: .default, reuseIdentifier: "doCell")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "doCell", for: indexPath)
         
@@ -101,14 +73,7 @@ class toDo: UITableViewController {
         }
         
         tableView.reloadData()
-        //Mark -> deleting raws befor ui editing
-        //        context.delete(dolist[indexPath.row])
-        //        dolist.remove(at: indexPath.row)
         
-        //        toDoItems?[indexPath.row].done = !toDoItems[indexPath.row].done
-        //        tableView.deselectRow(at: indexPath, animated: true)
-        //
-        //saveditems()
         
         
     }
@@ -141,17 +106,6 @@ class toDo: UITableViewController {
             self.tableView.reloadData()
         }
         
-        // Mark -> Core data code
-        //            let newItem =  Items(value: self.context)
-        //            newItem.title = textfield.text!
-        //            newItem.done = false
-        //            newItem.parentCategory = self.selctedCategory
-        //            self.dolist.append(newItem)
-        //
-        //         self.defaults.set(self.dolist, forKey: "dolist")
-        
-        //  self.saveditems()
-        //            self.tableView.reloadData()
         
         alert.addTextField { (alerttextfield) in
             alerttextfield.placeholder = "Enter New Item"
@@ -162,21 +116,6 @@ class toDo: UITableViewController {
         present(alert,animated: true,completion: nil)
     }
     
-    //    func saveditems (){
-    //
-    //        do{
-    //
-    //            //         try context.save()
-    //
-    //        }catch{
-    //
-    //            print("error Saving context")
-    //        }
-    //
-    //        tableView.reloadData()
-    //
-    //    }
-    
     func loadData (){
         
         toDoItems = selctedCategory?.items.sorted(byKeyPath: "title", ascending: true)
@@ -184,31 +123,6 @@ class toDo: UITableViewController {
         tableView.reloadData()
     }
 }
-//    func loadData(with request: NSFetchRequest <Items> = Items.fetchRequest(), predicate : NSPredicate? = nil){
-//
-//        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@ ", selctedCategory!.name!)
-//
-//        if let addtionalPredicate = predicate {
-//
-//            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate , addtionalPredicate])
-//
-//        }else{
-//            request.predicate = categoryPredicate
-//        }
-//
-//        do{
-//
-//            dolist =   try context.fetch(request)
-//
-//        }catch {
-//
-//            print("Error fetching data from request ")
-//        }
-//
-//        tableView.reloadData()
-//
-//    }
-//}
 
 //Mark SearchBar Method
 
@@ -230,32 +144,7 @@ extension toDo :UISearchBarDelegate {
         }
     }
 }
-//Mark SearchBar Method
 
-//extension toDo :UISearchBarDelegate {
-//
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//
-//       let request : NSFetchRequest<Items> = Items.fetchRequest()
-//
-//               let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
-//
-//               request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//               loadData(with: request, predicate: predicate)
-//
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        if searchBar.text?.count == 0 {
-//
-//            loadData()
-//            DispatchQueue.main.async {
-//                searchBar.resignFirstResponder()
-//            }
-//        }
-//    }
-//}
 
 
 

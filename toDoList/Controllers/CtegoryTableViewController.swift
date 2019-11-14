@@ -14,15 +14,10 @@ class CtegoryTableViewController: UITableViewController {
     let realm = try! Realm()
     
     var categories: Results <Category>?
-    
-    //  var categoryArr = [Category]()
-    
-    //    let context = (UIApplication.shared.delegate as! AppDelegate ).persistentContainer.viewContext
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-          loadData()
+        loadData()
     }
     
     // MARK: - Table view data source Methods
@@ -73,16 +68,13 @@ class CtegoryTableViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
-            // Mark -> Core data code
-            //            let newCategory =  Category(context: self.context)
-            
             // Mark -> Realm Code
             
             let newCategory =  Category()
             
             newCategory.name = textField.text!
             
-    //        self.categories.append(newCategory)
+            //        self.categories.append(newCategory)
             self.saveCategories(category: newCategory)
         }
         
@@ -122,17 +114,6 @@ class CtegoryTableViewController: UITableViewController {
         categories = realm.objects(Category.self)
         
         
-        //        // Mark -> Core data code
-        //        //      let request:NSFetchRequest <Category> = Category.fetchRequest()
-        //
-        //        do{
-        //            categoryArr = try context.fetch(request)
-        //        }
-        //
-        //        catch{
-        //
-        //            print(" Error Saving context \(error)")
-        //        }
         tableView.reloadData()
     }
     
