@@ -16,9 +16,7 @@ class toDo: UITableViewController {
     var toDoItems : Results <Items>?
     let realm = try! Realm()
     
-    //  var toDoItems = [Items]()
-    //  let defaults = UserDefaults.standard
-    //  let dataFilepath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist")
+
     var   selctedCategory : Category? {
         
         didSet{
