@@ -8,5 +8,6 @@ target 'toDoList' do
   # Pods for toDoList
 
 pod 'RealmSwift'
-pod 'SwipeCellKit'
+pod 'SwipeCellKit'  
+pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
 end

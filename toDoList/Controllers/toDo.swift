@@ -8,8 +8,8 @@
 
 import UIKit
 import RealmSwift
-
-class toDo: UITableViewController {
+import ChameleonFramework
+class toDo: SwipeTableViewController, UISearchBarDelegate {
     
     
     var toDoItems : Results <Items>?
@@ -28,6 +28,7 @@ class toDo: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        tableView.separatorStyle = .none
     }
     
     // Mark DataSource Method
@@ -38,11 +39,20 @@ class toDo: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "doCell", for: indexPath)
+        
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        
+        //        let cell = tableView.dequeueReusableCell(withIdentifier: "doCell", for: indexPath)
         
         if   let item = toDoItems?[indexPath.row] {
             
             cell.textLabel?.text = item.title
+            
+            if let  colour = 	UIColor(hexString: selctedCategory!.color)?.darken (byPercentage: CGFloat ( indexPath.row ) / CGFloat (toDoItems!.count)) {
+                
+                cell.backgroundColor = colour
+                cell.textLabel?.textColor = ContrastColorOf(colour, returnFlat: true)
+            }
             
             cell.accessoryType = item.done ?  .checkmark :  .none
             
@@ -56,7 +66,7 @@ class toDo: UITableViewController {
         return cell
     }
     
-    //Mark Delegate method
+    // Mark :-> Delete Data from Swipe
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
@@ -115,18 +125,29 @@ class toDo: UITableViewController {
         present(alert,animated: true,completion: nil)
     }
     
-    func loadData (){
+    public func loadData (){
         
         toDoItems = selctedCategory?.items.sorted(byKeyPath: "title", ascending: true)
         
         tableView.reloadData()
     }
-}
-
-//Mark SearchBar Method
-
-extension toDo :UISearchBarDelegate {
     
+    
+    // Mark :-> Delete Data from Swipe
+    
+    override func updateModel(at IndexPath: IndexPath) {
+        super.updateModel(at: IndexPath)
+        if let categoryForDeletion = self.toDoItems?[IndexPath.row]{
+            
+            do{
+                try self.realm.write {
+                    self.realm.delete(categoryForDeletion)
+                }
+            }catch{
+                print("Error deleting Cell , \(error)")
+            }
+        }
+    }
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         toDoItems = toDoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
@@ -144,6 +165,31 @@ extension toDo :UISearchBarDelegate {
     }
 }
 
+
+
+
+////Mark SearchBar Method
+//
+// extension toDo : UISearchBarDelegate {
+//
+//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+//
+//        toDoItems = toDoItems?.filter("title CONTAINS[cd] %@", searchBar.text!).sorted(byKeyPath: "dateCreated", ascending: true)
+//        tableView.reloadData()
+//    }
+//
+//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+//        if searchBar.text?.count == 0 {
+//
+//            loadData()
+//            DispatchQueue.main.async {
+//                searchBar.resignFirstResponder()
+//            }
+//        }
+//    }
+//}
+//
+//}
 
 
 
