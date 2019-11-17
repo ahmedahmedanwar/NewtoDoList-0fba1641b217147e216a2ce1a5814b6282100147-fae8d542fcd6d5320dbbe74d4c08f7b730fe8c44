@@ -24,6 +24,7 @@ class CtegoryTableViewController: SwipeTableViewController {
         tableView.rowHeight = 65.0
     }
     
+    
     // MARK: - Table view data source Methods
     
     
@@ -33,12 +34,21 @@ class CtegoryTableViewController: SwipeTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell =  super.tableView(tableView, cellForRowAt: indexPath)
-        cell.textLabel?.text = categories?[indexPath.row].name ?? "No Categories Add yet"
-        cell.backgroundColor = UIColor(hexString: categories? [indexPath.row].color ?? "‏3232ff" )
-      
 
+
+            let cell = super.tableView(tableView, cellForRowAt: indexPath)
+                  
+                  if let category = categories?[indexPath.row] {
+                      
+                      cell.textLabel?.text = category.name
+                      
+                      guard let categoryColour = UIColor(hexString: category.color) else {fatalError()}
+                      
+                      cell.backgroundColor = categoryColour
+                      cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
+                      
+//                      cell.textLabel?.textColor = ContrastColorOf(categoryColour, returnFlat: true)
+        }
         return cell
 
     }
@@ -58,6 +68,7 @@ class CtegoryTableViewController: SwipeTableViewController {
         if let   indexpath = tableView.indexPathForSelectedRow {
             
             destinationVC.selctedCategory = categories? [indexpath.row]
+            
         }
         
     }
